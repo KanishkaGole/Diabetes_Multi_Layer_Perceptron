@@ -2,8 +2,8 @@ pipeline {
   agent any
 
   environment {
-    IMAGE_NAME = 'mlp-ui'
-    CONTAINER_NAME = 'mlp-ui-app'
+    IMAGE_NAME = 'diabetes_multi_layer_perceptron'
+    CONTAINER_NAME = 'diabetes_multi_layer_perceptron-app'
     APP_PORT = '8020'
   }
 
