@@ -50,7 +50,20 @@ pipeline {
 
     stage('Health Check') {
       steps {
-        sh 'curl -f http://localhost:${APP_PORT}/ >/dev/null'
+        sh '''
+          set -e
+          echo "Waiting for application to become healthy on port ${APP_PORT}..."
+          for i in $(seq 1 30); do
+            if curl -fsS http://localhost:${APP_PORT}/ >/dev/null; then
+              echo "Health check passed on attempt ${i}."
+              exit 0
+            fi
+            echo "Health check attempt ${i}/30 failed; retrying in 2s..."
+            sleep 2
+          done
+          echo "Health check failed after 30 attempts."
+          exit 1
+        '''
       }
     }
   }
@@ -60,7 +73,11 @@ pipeline {
       echo 'Deployment succeeded. App is running in Docker.'
     }
     failure {
-      echo 'Pipeline failed. Check logs for details.'
+      echo 'Pipeline failed. Collecting container diagnostics...'
+      sh '''
+        docker ps -a --filter name=${CONTAINER_NAME} || true
+        docker logs --tail 200 ${CONTAINER_NAME} || true
+      '''
     }
   }
 }
