@@ -152,7 +152,13 @@ Fallback behavior:
 
 - Missing scaler values: identity scaling is used
 - Missing class labels: sensible defaults are applied
+- 
+## Contributors
 
+- **Kanishka Gole** - [GitHub Profile](https://github.com/KanishkaGole)
+- **Tanisha Ahuja** 
+- **Arjun Ghone**
+  
 ## License
 
 This project is licensed under the MIT License. See LICENSE for details.
